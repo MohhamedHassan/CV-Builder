@@ -1,0 +1,72 @@
+<nav class=" py-3" style="background:#023642">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+   <div>
+   <a routerLink="/home">
+    <img 
+  
+    src="assets/logo.png" alt="">
+   </a>
+   </div>
+     <ul class="list-unstyled m-0 d-flex">
+        <li>
+          <a routerLink="/contact-us" 
+          style="color: white;text-decoration: none;"
+          >
+           Contact Us 
+          </a>
+        </li>
+        <li class="mx-2 text-white">
+          |
+        </li>
+        <li>
+          <a routerLink="/cv" 
+          style="color: white;text-decoration: none;"
+          >
+     Create CV
+          </a>
+        </li>
+     </ul>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+<footer style="background-color: #033D4A;" class="py-3">
+
+  <div class="container-fluid d-md-flex 
+  text-center
+  justify-content-between align-items-center">
+
+    <ul class="list-unstyled 
+    justify-content-center
+    d-flex text-white mb-3 mb-md-0">
+      <li class="me-3">
+        <a routerLink="/privacy-policy" >
+        Privacy Policy
+      </a>
+    </li>
+      <li class="me-3">
+        <a routerLink="/terms-conditions">
+        Terms & Conditions
+      </a>
+    </li>
+      <li>
+        <a
+        routerLink="/contact-us"
+        >Contact Us</a>
+      </li>
+    </ul>
+
+      <div class="">
+        <p class=" m-0 text-white"> © 2022, All rights reserved.</p>
+      </div>
+
+  </div>
+</footer>
+<!-- end footer -->
+<style>
+  footer a {
+    color:  white !important;
+    font-size: small;
+    text-decoration: none;
+  }
+</style>

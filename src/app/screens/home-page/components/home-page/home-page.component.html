@@ -1,0 +1,95 @@
+<header style="    background-image: url('assets/homepageimage.jpg');">
+    <div class="cover text-center">
+        <div>
+            <h1  class="mb-3 px-3">FREE AND EASY CV BUILDER</h1>
+            <button class="btn btn-success p-0">
+                <a 
+                style="color: white;text-decoration: none;padding: 15px;display: block;"
+                routerLink="/cv" >CREATE YOUR CV</a>
+            </button>
+        </div>
+    </div>
+</header>
+<section style="padding: 200px 0;">
+    <div class="container">
+        <h2 
+        style="font-weight: bold;"
+        class="text-primary text-center">
+            What they say about us
+        </h2>
+        <swiper class="p-5"[config]="swiperConfig">
+            <ng-template 
+            *ngFor="let item of abouus"
+            swiperSlide>
+            <div style="border-radius: 10px;border: 1px solid rgb(211, 209, 209);padding: 20px;">
+                <div class="d-flex justify-content-between 
+                align-items-center
+                mb-3">
+                    <img [src]="item?.img" 
+                    style="width: 70px;height: 70px;border-radius: 50%;margin-right: 10px;"
+                    alt="">
+                    <h3>{{item?.name}}</h3>
+                </div>
+                <p class="tex-secondary">{{item?.text}}</p>
+            </div>
+            </ng-template>
+          </swiper>
+    </div>
+</section>
+<div style="padding-bottom: 200px;">
+    <section class="container">
+        <div 
+        style="border-radius: 20px;margin-bottom: 50px;background-color: #033D4A;"
+        class=" p-4 text-center text-white">
+            <h2 style="font-weight: bold;font-size: 60px;">{{counter}}</h2>
+            <p style="font-size: 30px;">TOTAL CVs CREATED</p>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-success p-0">
+                <a 
+                style="color: white;text-decoration: none;padding: 15px;display: block;"
+                routerLink="/cv" >CREATE YOUR CV</a>
+            </button>
+        </div>
+    </section>
+</div>
+<div  style="padding: 200px 0;background-color: #F4F7FC;">
+    <section class="container" >
+        <div>
+            <h5 class="text-center text-primary">How it Works</h5>
+            <h2 class="text-center" style="font-size: 50px;margin-bottom: 70px;">
+                Build your resume <br> in three simple steps
+            </h2>
+            <div class="row">
+                <div class="col-lg-4 mb-5">
+                  <div class="p-5 bg-white">
+                    <div>
+                        <div class="crcl">1</div>
+                        <h4 class="my-3">Fill in the Blanks</h4>
+                        <p class="m-0">Start by filling in the relevant  <br> information for your CV.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-5">
+                    <div class="p-5 bg-white">
+                        <div>
+                            <div class="crcl">2</div>
+                            <h4 class="my-3">Pick a template</h4>
+                            <p class="m-0">Choose a template and customize <br> it to your own identity.</p>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-lg-4 mb-5">
+                    <div class="p-5 bg-white">
+                        <div>
+                            <div class="crcl">3</div>
+                            <h4 class="my-3"> Download your CV</h4>
+                            <p class="m-0">Easily download your CV <br> and edit afterwards. </p>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

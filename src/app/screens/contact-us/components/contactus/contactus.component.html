@@ -1,0 +1,73 @@
+<div class="text-center text-white py-5 px-3" style="background-color: #033D4A;">
+    <h1>Need some help? Call us.</h1>
+    <p>CVHelp's Customer service is here for you seven days a week.</p>
+</div>
+<div class="container py-5">
+    <div class="row">
+     
+        <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div>
+            <div class="text-center">
+                <h2 class=" mb-4">Send us a message</h2>
+                <p>We'd love to hear from you. Fill in the form and we promise to respond within one working day</p>
+        </div>
+           <form
+           [formGroup]="contactusForm"
+           (ngSubmit)="contactus(contactusForm.value)"
+           >
+               <div class="form-group mb-4">
+                   <label for="">Name</label>
+                   <input  
+                    formControlName="name"
+                   type="text" class="form-control">
+                   <p 
+                   *ngIf="(contactusForm.controls.name?.errors!=null &&contactusForm.controls.name.touched) ||
+                   (contactusForm.controls.name?.errors!=null && submited)
+                   "
+                   class="text-danger py-2">Required</p>
+               </div>
+               <div class="form-group mb-4">
+                   <label for="">Email</label>
+                <input 
+                formControlName="email"
+                type="email" class="form-control">
+                <p 
+                *ngIf="(contactusForm.controls.email?.errors!=null &&contactusForm.controls.email.touched) ||
+                (contactusForm.controls.email?.errors!=null && submited)
+                "
+                class="text-danger py-2">Required</p>
+            </div>
+            <div class="form-group mb-4">
+                <label for="">Message</label>
+                <textarea  
+                formControlName="message"
+                class="form-control" cols="30" rows="5"></textarea>
+                <p 
+                *ngIf="(contactusForm.controls.message?.errors!=null &&contactusForm.controls.message.touched) ||
+                (contactusForm.controls.message?.errors!=null && submited)
+                "
+                class="text-danger py-2">Required</p>
+            </div>
+            <div class="form-group">
+               <button class="btn btn-success w-100">Send Message
+                <i 
+                *ngIf="loading"
+                class="fas 
+                text-white
+                ms-3
+                d-inline-block
+                fa-circle-notch fa-spin"></i>
+               </button>
+            </div>
+           </form>
+           <p 
+           *ngIf="sent"
+           class="text-center py-5">
+            Message sent successfully
+           </p>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+

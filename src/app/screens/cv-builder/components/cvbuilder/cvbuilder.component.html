@@ -1,0 +1,1987 @@
+<div 
+
+[style]="{
+  'height':openSideNave?'100vh':'auto',
+  'overflow':openSideNave?'hidden':'auto'
+}"
+class="container-fluid " >
+<div class="text-center my-4">
+  <h1 class="m-0">Total CVs Created {{counter}}</h1>
+</div>
+    <div 
+    #rightSectionScroll
+    class="row  justify-content-center pb-4">
+      <div 
+      class="col-md-8 mb-5">
+      <i 
+
+      (click)="openSideNave=!openSideNave"
+      class="fas fa-cog mb-4  showsidenav"
+      style="font-size: 30px;"
+    ></i>
+        <div class="d-flex formsSection">
+      
+          <div 
+          (click)="openSideNave=!openSideNave"
+          *ngIf="openSideNave" class="rgbacover"></div>
+          <ul 
+          style="transition: .5s;"
+          [style.left]="openSideNave?'0':'-100%'"
+          class="sections sidenavv list-unstyled mb-0 me-4">
+          <li  
+          *ngIf="openSideNave"
+          (click)="openSideNave=!openSideNave">
+            <i class="fas fa-times" style="color:#b1b6b7"></i>
+          </li>
+            <li (click)="downloadPDF();openSideNave=false">
+              <i class="fas fa-arrow-down" style="color:#b1b6b7"></i>
+              Download PDF
+            </li>
+            <li (click)="currentSection='settings';openSideNave=false">
+              <i 
+               class="fas fa-highlighter"
+              [style.color]="currentSection=='settings' ? '#023642' : ' #b1b6b7'"
+            ></i>
+              Edit Template</li>
+            <li (click)="currentSection='heading';scrollToTheSection(rightSectionScroll)">
+              <i 
+              [style.color]="currentSection=='heading' ? '#023642' : ' #b1b6b7'"
+              class="fas fa-user"></i>
+              Heading & Contact</li>
+            <li (click)="currentSection='summary';scrollToTheSection(rightSectionScroll)">
+              <i 
+              [style.color]="currentSection=='summary' ? '#023642' : ' #b1b6b7'"
+              class="fas fa-trophy"></i>
+              Summary</li>
+            <li (click)="currentSection='skills';scrollToTheSection(rightSectionScroll)" >
+              <i 
+              [style.color]="currentSection=='skills' ? '#023642' : ' #b1b6b7'"
+              class="fas fa-file"></i>
+              Skills</li>
+            <li (click)="currentSection='experience';scrollToTheSection(rightSectionScroll)">
+              <i 
+              [style.color]="currentSection=='experience' ? '#023642' : ' #b1b6b7'"
+              class="fas fa-briefcase"></i>
+              Experience</li>
+            <li (click)="currentSection='education';scrollToTheSection(rightSectionScroll)">
+              <i 
+              [style.color]="currentSection=='education' ? '#023642' : ' #b1b6b7'"
+              class="fas fa-user-graduate"></i>
+              Education</li>
+            <li (click)="currentSection='custom';scrollToTheSection(rightSectionScroll)">
+              <i 
+              [style.color]="currentSection=='custom' ? '#023642' : ' #b1b6b7'"
+              class="fas fa-folder-plus"></i>
+              Custom Section</li>
+          </ul>
+          <div [hidden]="currentSection!='settings'"> 
+            <div class="containerOfColors mb-3">
+              <h3>Color</h3>
+              <ul  class="  list-unstyled color  d-flex justify-content-center flex-wrap" >
+                <li [style.background]="item"
+                    (click)="currentColor=item"
+                     *ngFor="let item of colors|slice:0:6">
+                  <i *ngIf="currentColor==item" class="fa fa-check text-white"></i>
+                </li>
+               
+              </ul>
+              <ul  class="  list-unstyled color m-0 d-flex justify-content-center flex-wrap" >
+                <li [style.background]="item"
+                    (click)="currentColor=item"
+                     *ngFor="let item of colors|slice:6">
+                  <i *ngIf="currentColor==item" class="fa fa-check text-white"></i>
+                </li>
+               
+              </ul>
+             </div>
+             <div class="mb-3">
+              <label for="">PDF Name</label>
+              <input type="text" placeholder="PDF Name" [(ngModel)]="pdfName" class="form-control">
+            </div>
+            <div>
+              <label for="">PDF Page Height </label>
+              <input type="text" placeholder="Height of PDF page" [(ngModel)]="height" class="form-control">
+            </div>
+          </div>
+          <div [hidden]="currentSection!='heading'">
+            <h2 class="m-0">Let's complete your Resume Heading</h2>
+            <p class='mb-4'>How do you want employers to contact you?</p>
+            <div class="form-group mb-3">
+              <label>Name</label>
+              <input [(ngModel)]="heading.name" type="text" class="form-control">
+            </div>
+            <!-- end user name -->
+            <div class="form-group mb-3">
+              <label>Position</label>
+              <input [(ngModel)]="heading.position" type="text" class="form-control">
+            </div>
+            <!-- end user position -->
+            <div class="form-group mb-3">
+              <label>Address</label>
+              <input [(ngModel)]="heading.address" type="text" class="form-control">
+            </div>
+            <!-- end user address -->
+            <div class="form-group mb-3">
+              <label>Phone</label>
+              <input [(ngModel)]="heading.phone" type="text" class="form-control">
+            </div>
+            <!-- end user phone -->
+            <div class="form-group mb-3">
+              <label>Email</label>
+              <input [(ngModel)]="heading.email" type="text" class="form-control">
+            </div>
+            <!-- end user Email -->
+            <button (click)="currentSection='summary';scrollToTheSection(rightSectionScroll);" class="btn btn-success">Save & Next</button>
+          </div>
+          <!-- end heading -->
+          <div  #experienceFormId [hidden]="currentSection!='experience'">
+            <h2 class="m-0">Experience</h2>
+            <p class='mb-4'>What work experience do you have?</p>
+            <label>Section Title</label>
+            <input [(ngModel)]="heading.experienceTitle" type="text" class="form-control mb-3">
+            <form [formGroup]="experinceForm" (ngSubmit)="addExperience(experinceForm.value)">
+              <div class="form-group mb-3">
+                <label>Job Title</label>
+                <input formControlName="jopbTitle" type="text" class="form-control">
+                <p *ngIf="controls.jopbTitle?.errors!=null && controls.jopbTitle.touched" class="py-2 text-danger">Required
+                </p>
+              </div>
+              <!-- end user job title -->
+              <div class="form-group mb-3">
+                <label>Employer</label>
+                <input formControlName="employer" type="text" class="form-control">
+                <p *ngIf="controls.employer?.errors!=null && controls.employer.touched" class="py-2 text-danger">Required
+                </p>
+              </div>
+              <!-- end user Employer -->
+              <div class="form-group mb-3">
+                <label>job responsibilities ( optional )</label>
+                <textarea formControlName="summary" class="form-control" name="" id="" cols="30" rows="3"></textarea>
+              </div>
+              <!-- end job responsibilities -->
+              <div class="form-group mb-3">
+                <label>Start Date</label>
+                <input formControlName="startDate" type="month" class="form-control">
+                <p *ngIf="controls.startDate?.errors!=null && controls.startDate.touched" class="py-2 text-danger">Required
+                </p>
+              </div>
+              <!-- end start date -->
+              <div class="form-group mb-3">
+                <label>End Date</label>
+                <input formControlName="endDate" type="month" class="form-control">
+                <p *ngIf="controls.endDate?.errors!=null && controls.endDate.touched" class="py-2 text-danger">Required</p>
+              </div>
+              <!-- end end date -->
+              <div class="form-check">
+                <input formControlName="current" class="form-check-input" type="checkbox" value="true"
+                  id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  I currently work here
+                </label>
+              </div>
+              <ng-container *ngIf="currentTemplate!=2">
+                <div class="form-check">
+                  <input  
+                  checked
+                  (change)="setExperienceAt='right'"
+                  class="form-check-input"  type="radio" name="rightOrLeftEx" id="ex1">
+                  <label class="form-check-label" for="ex1">
+                    Right Section
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input 
+                  (change)="setExperienceAt='left'"
+                  class="form-check-input" type="radio" name="rightOrLeftEx" id="ex2" >
+                  <label class="form-check-label" for="ex2">
+                    Left Section
+                  </label>
+                </div>
+                <!-- end lef or right -->
+              </ng-container>
+              <button [disabled]="experinceForm.invalid" class="btn btn-success my-2 w-100">
+                {{experienceIndex==-1 ? 'Submit' : 'Edit'}}
+              </button>
+            </form>
+            <!-- end add experience form -->
+            <ng-container *ngIf="experience?.length">
+              <ul>
+                <li *ngFor="let item of experience;let experienceIndex = index">
+    
+                  <i class="fas fa-trash text-success " style="cursor: pointer;"
+                    (click)="removeExperience(experienceIndex)"></i>
+                  <!-- end delet experience -->
+                  <i (click)="editExperience(experienceIndex,item,experienceFormId)" style="cursor: pointer;"
+                    class="fas fa-pen text-success d-inline-block mx-2"></i>
+                  <!-- end edit experience -->
+                  {{item?.jopbTitle}}
+                </li>
+              </ul>
+            </ng-container>
+            <!-- end edit experience -->
+            <div class="d-flex justify-content-between my-3">
+              <button (click)="currentSection='skills';scrollToTheSection(rightSectionScroll);" class="btn btn-secondary">Back</button>
+              <button (click)="currentSection='education';scrollToTheSection(rightSectionScroll);" class="btn btn-success">Save & Next</button>
+            </div>
+          </div>
+          <!-- end work experience -->
+          <div #eduFormID  [hidden]="currentSection!='education'">
+            <h2 class="m-0">Education</h2>
+            <p class='mb-4'>Where did you go to school/university?</p>
+            <label>Section Title</label>
+            <input [(ngModel)]="heading.educationTitle" type="text" class="form-control mb-3">
+            <form [formGroup]="educationForm" (ngSubmit)="addEducation(educationForm.value)">
+              <div class="form-group mb-3">
+                <label>Institution & Field of study</label>
+                <input formControlName="university" type="text" class="form-control">
+                <p *ngIf="educationForm.controls.university?.errors!=null &&
+                educationForm.controls.university.touched" class="my-2 text-danger">
+                  Required
+                </p>
+              </div>
+              <!-- end user Institution & Field of study -->
+              <div class="form-group mb-3">
+                <label>Graduation Date ( optional )</label>
+                <input formControlName="graduationDate" type="month" class="form-control">
+              </div>
+              <!-- end Graduation date -->
+              <ng-container *ngIf="currentTemplate!=2">
+                <div class="form-check">
+                  <input  
+                  checked
+                  (change)="setEducationAt='right'"
+                  class="form-check-input"  type="radio" name="rightOrLeft" id="edu1">
+                  <label class="form-check-label" for="edu1">
+                    Right Section
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input 
+                  (change)="setEducationAt='left'"
+                  class="form-check-input" type="radio" name="rightOrLeft" id="edu2" >
+                  <label class="form-check-label" for="edu2">
+                    Left Section
+                  </label>
+                </div>
+                <!-- end lef or right -->
+              </ng-container>
+       
+              <button [disabled]="educationForm.invalid" class="btn btn-success my-2 w-100">
+                {{educationIndex==-1 ? 'Submit' : 'Edit'}}
+              </button>
+            </form>
+            <ng-container *ngIf="education?.length">
+              <div *ngFor="let item of education;let edu =index" class="my-2">
+    
+                <i class="fas fa-trash text-success " style="cursor: pointer;" (click)="removeEducation(edu)"></i>
+                <!-- end delet education -->
+                <i (click)="editEducation(edu,item,eduFormID)" style="cursor: pointer;"
+                  class="fas fa-pen text-success d-inline-block mx-2"></i>
+                <!-- end edit education -->
+                {{item?.university}}
+              </div>
+            </ng-container>
+    
+            <div class="d-flex justify-content-between my-3">
+              <button (click)="currentSection='experience';scrollToTheSection(rightSectionScroll);" class="btn btn-secondary">Back</button>
+              <button (click)="currentSection='custom';scrollToTheSection(rightSectionScroll);" class="btn btn-success">Save & Next</button>
+            </div>
+          </div>
+          <!-- end user education -->
+          <div [hidden]="currentSection!='skills'">
+            <h2 class="m-0">Skills</h2>
+            <p class='mb-4'>Highlight six to eight of your top skills</p>
+            <label>Section Title</label>
+            <input type="text" class="form-control mb-3" [(ngModel)]="heading.skillsTitle">
+            <div class="form-group mb-3">
+              <input #skill (keyup.enter)="addSkills(skill)" type="text" class="form-control mb-2">
+              <button (click)="addSkills(skill)" class="btn btn-success">
+                {{skillIndex==-1 ? 'Add Skills' : 'Edit'}}
+              </button>
+            </div>
+            <div class="my-3">
+              <ul *ngIf="skills?.length">
+                <li *ngFor="let item of skills;let i =index" style="border: 1px solid transparent;">
+    
+    
+                  <i class="fas fa-trash text-success " style="cursor: pointer;" (click)="removeSkill(i)"></i>
+                  <!-- end delet skill -->
+                  <i (click)="editSkill(i,skill)" style="cursor: pointer;"
+                    class="fas fa-pen text-success d-inline-block mx-2"></i>
+                  <!-- end edit skill -->
+                  {{item}}
+                  <!-- end skill name -->
+                </li>
+              </ul>
+            </div>
+            <ng-container *ngIf="currentTemplate!=2">
+              <div class="form-check">
+                <input  (change)="this.setSkillsAt='right'" class="form-check-input"  type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Right Section
+                </label>
+              </div>
+              <div class="form-check">
+                <input 
+                (change)="this.setSkillsAt='left'"
+                class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Left Section
+                </label>
+              </div>
+            </ng-container>
+         
+            <div class="d-flex justify-content-between my-3">
+              <button (click)="currentSection='summary';scrollToTheSection(rightSectionScroll);" class="btn btn-secondary">Back</button>
+              <button (click)="currentSection='experience';scrollToTheSection(rightSectionScroll);" class="btn btn-success">Save & Next</button>
+            </div>
+          </div>
+          <!-- end user skills -->
+          <div [hidden]="currentSection!='summary'">
+            <h2>Professional summary</h2>
+            <label>Section Title</label>
+            <input class="form-control mb-3" [(ngModel)]="heading.summaryTitle">
+            <div class="form-group mb-3">
+              <textarea [(ngModel)]="heading.summary" name="" id="" cols="30" rows="10" class="form-control"></textarea>
+            </div>
+            <ng-container *ngIf="currentTemplate!=2">
+              <div class="form-check">
+                <input 
+                checked
+                 (change)="this.setSummarryAt='right'" class="form-check-input"  type="radio" name="summaryInput" id="flexRadioDefault4">
+                <label class="form-check-label" for="flexRadioDefault4">
+                  Right Section
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                (change)="this.setSummarryAt='left'"
+                class="form-check-input" type="radio" name="summaryInput" id="flexRadioDefault3" >
+                <label class="form-check-label" for="flexRadioDefault3">
+                  Left Section
+                </label>
+              </div>
+            </ng-container>
+          
+            <div class="d-flex justify-content-between my-3">
+              <button (click)="currentSection='heading';scrollToTheSection(rightSectionScroll);" class="btn btn-secondary">Back</button>
+              <button (click)="currentSection='skills';scrollToTheSection(rightSectionScroll);" class="btn btn-success">Save & Next</button>
+            </div>
+          </div>
+          <!-- end user Professional summary -->
+          <div [hidden]="currentSection!='custom'">
+            <h2>Add Custom Section</h2>
+            <form 
+            [formGroup]="customSectionForm"
+            (ngSubmit)="addCustomeSection(customSectionForm.value)"
+            >
+              <div class="form-group mb-3">
+                <input 
+                formControlName="sectionTitle"
+                placeholder="Section Title"
+                type="text"  class="form-control">
+                <p 
+                *ngIf="customSectionForm.controls.sectionTitle?.errors!=null &&
+                customSectionForm.controls.sectionTitle.touched
+                "
+                class="p-2 text-danger">Required</p>
+              </div>
+              <!-- end section title -->
+        
+              <div
+              class="mb-3"
+              >
+                <div class="form-group mb-3"
+                *ngIf="getContent().controls.length"
+                formArrayName="content"
+                >
+                  <ng-container *ngFor="let contentItem of getContent().controls;let contentItemIndex = index">
+                      <div 
+                      style="border: 1px solid rgb(206, 202, 202);padding: 40px;border-radius: 20px;
+                      position: relative;
+                      "
+                      [formGroupName]="contentItemIndex"
+                      class="form-group mb-3">
+                          <input 
+                          formControlName="bold"
+                          placeholder="Bold Text"
+                          type="text" class="form-control mb-3">
+                          <input 
+                          formControlName="normal"
+                          placeholder="Normal Text"
+                          type="text" class="form-control mb-3">
+                          <div 
+                          formArrayName="list">
+                          <ng-container *ngFor="let listItem of getList(contentItemIndex).controls;let listIdex = index">
+                            <div 
+                            [class.mb-3]="listIdex<getList(contentItemIndex).controls?.length-1"
+                            [formGroupName]="listIdex"
+                           >
+                           <i 
+                           style="cursor: pointer;position: absolute;right: 20px;"
+                           (click)="deleteList(contentItemIndex,listIdex)"
+                           class="fas fa-times"></i>
+                              <input
+                              formControlName="listItem"
+                              placeholder="List Item" type="text" class="form-control mb-3">
+                         
+                            </div>
+                          </ng-container>
+                          <button 
+                          type="button"
+                          (click)="addList(contentItemIndex)"
+                           class="btn btn-success">add List Item</button>
+                          </div>
+                       
+                          <i 
+                          style="cursor: pointer;position: absolute;top: 10px;right: 10px;background-color: gray;padding: 10px;border-radius: 50%;color:white"
+                          (click)="deleteContent(contentItemIndex)"
+                          class="fas fa-times"></i>
+                      </div>
+                  </ng-container>
+                 
+                </div>
+             <div>
+              <button 
+              type="button"
+              class="btn btn-success"
+              (click)="addContent()">Add Item</button>
+             </div>
+              </div>
+     
+              <!-- end form array  -->
+              <div 
+              *ngIf="currentTemplate!=2"
+              class="form-group mb-3">
+                <div class="form-check">
+                  <input 
+                  checked
+                  formControlName="leftOrRight"
+                  value="right"
+                  class="form-check-input" 
+                  type="radio" name="leftOrRight" id="cstm1">
+                  <label class="form-check-label" for="cstm1">
+                    Right Section
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                  formControlName="leftOrRight"
+                  value="left"
+                  class="form-check-input" type="radio" name="leftOrRight" id="cstm2" >
+                  <label class="form-check-label" for="cstm2">
+                    Left Section
+                  </label>
+                </div>
+               </div>
+                  <!-- end left or right -->
+              <button 
+              [disabled]="customSectionForm.invalid"
+              class="btn btn-success w-100">
+                Submit
+              </button>
+            </form>
+            <!-- end custom section form -->
+            <ng-container *ngIf="customSection?.length">
+              <div *ngFor="let item of customSection">
+    
+              </div>
+            </ng-container>
+             <ul *ngIf="customSection?.length" class="my-3">
+                <li *ngFor="let item of customSection;let i =index" style="border: 1px solid transparent;">
+    
+    
+                  <i class="fas fa-trash text-success " style="cursor: pointer;" (click)="removeCustomeSection(i)"></i>
+                  <!-- end delet custom section -->
+                  <i (click)="editCustomeSection(i,item)" style="cursor: pointer;"
+                    class="fas fa-pen text-success d-inline-block mx-2"></i>
+                  <!-- end edit custom section -->
+                  {{item.sectionTitle}}
+                  <!-- end custom section name -->
+                </li>
+              </ul>
+            <!-- end edit and delete custom section -->
+            <div class="d-flex justify-content-between my-3">
+              <button (click)="currentSection='education';scrollToTheSection(rightSectionScroll);" class="btn btn-secondary">Back</button>
+              <button (click)="downloadPDF()" class="btn btn-success">
+                Download PDF
+              </button>
+            </div>
+          </div>
+          <!-- end custom section -->
+        </div>
+       
+      </div>
+      <!-- end add cv forms -->
+      <div class="col-md-4 text-center mb-5">
+        <div>
+          <swiper style="padding : 50px 0 !important" [config]="swiperConfig">
+            <ng-template  swiperSlide>
+              <div>
+                <div class="mb-3">
+                  <img 
+                 class=" img-fluid"
+                style="box-shadow: 0 14px 10px rgb(0 0 0 / 25%), 0 -5px 10px rgb(0 0 0 / 22%);height: 300px;"
+                src="assets/templateone.png" alt="">
+                </div>
+                <button 
+                (click)="currentTemplate=1;currentColor='#373d48';setValidator();scrollToTheSection(pre)"
+                class="btn btn-success my-2">Select This Template</button>
+              </div>
+            </ng-template>
+            <ng-template swiperSlide>
+              <div>
+                <div class="mb-3">
+                  <img 
+                  class="img-fluid"
+                  style="box-shadow: 0 14px 10px rgb(0 0 0 / 25%), 0 -5px 10px rgb(0 0 0 / 22%);height: 300px;"
+                  src="assets/templatetow.png" alt="">
+                </div>
+                  <button 
+                  (click)="currentTemplate=2;currentColor='#305FEC';removeValidatorr();scrollToTheSection(pre)"
+                  class="btn btn-success my-2">Select This Template</button>
+                </div>
+            </ng-template>
+            <ng-template swiperSlide>
+              <div>
+                <div class="mb-3">
+                  <img 
+                  class="img-fluid"
+                  style="box-shadow: 0 14px 10px rgb(0 0 0 / 25%), 0 -5px 10px rgb(0 0 0 / 22%);height: 300px;"
+                  src="assets/template3.png" alt="">
+                </div>
+                  <button 
+                  (click)="currentTemplate=3;currentColor='#009160';setValidator();scrollToTheSection(pre)"
+                  class="btn btn-success my-2">Select This Template</button>
+                </div>
+            </ng-template>
+          </swiper>
+        </div>
+      </div>
+      <div 
+      #pre
+      class="col-11 cvSection" style="overflow: auto">
+    <ng-container *ngIf="downlloadLoading;else cvss">
+      <div class="lds-dual-ring"></div>
+    </ng-container>
+    <ng-template #cvss>
+
+   
+    
+      <div 
+      class="wdth"
+      style="box-shadow: 0 14px 10px rgb(0 0 0 / 25%), 0 -5px 10px rgb(0 0 0 / 22%);">
+  
+      
+      <div
+      *ngIf="currentTemplate==1" 
+      [id]="currentTemplate == 1 ? 'content' : 'none'"
+      >
+  
+      <!-- start heading -->
+        <div 
+        [style.backgroundColor]="currentColor"
+        style="color: white;padding: 30px;margin-bottom: 10px;"
+        >
+          <h2   
+          [style.fontSize]="(fontsize && wdth<992)?'medium':'32px'"
+          class="mb-1 mainName">{{heading?.name}}</h2>
+          <h4 
+          [style.fontSize]="(fontsize && wdth<992)?'small':'24px'"
+          class="mb-4">{{heading?.position}}</h4>
+           <table style="border: 1px solid transparent;"> 
+             <tr>
+              <td style="padding-right: 10px;vertical-align: text-top;">
+                <svg 
+                style="color: white;"
+                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                  <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                </svg>
+              </td>
+               <td style="vertical-align: text-top;"
+               [style.fontSize]="(fontsize && wdth<992)?'small':'medium'"
+               >{{heading?.address}}</td>    
+             </tr>
+           </table>
+           <table  style="border: 1px solid transparent;">
+            <tr>
+             <td style="padding-right: 10px;vertical-align: text-top;">
+              <svg xmlns="http://www.w3.org/2000/svg" style="color: white;" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+              </svg>
+             </td>
+              <td style="vertical-align: text-top;"
+              [style.fontSize]="(fontsize && wdth<992)?'small':'medium'"
+              >{{heading?.phone}}</td>    
+            </tr>
+          </table>
+          <table  style="border: 1px solid transparent;">
+            <tr>
+             <td style="padding-right: 10px;;vertical-align: text-top">
+               <svg 
+               style="color: white;vertical-align: text-top;"
+               xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                 <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+               </svg>
+             </td>
+              <td style="vertical-align: text-top"
+              [style.fontSize]="(fontsize && wdth<992)?'small':'medium'"
+              >{{heading?.email}}</td>    
+            </tr>
+          </table>
+       </div>
+       <!-- end heading -->
+       <table style="width: 100%;border: 1px solid transparent">
+          <tr>
+            <th 
+    
+            style="width: 40%;vertical-align: top">
+          
+            <div    cdkDropListGroup>
+              <div 
+              cdkDropList
+           #sidebarList="cdkDropList"
+            [cdkDropListData]="sidebar"
+           (cdkDropListDropped)="drop($event)"
+              >
+              <div 
+    
+              *ngIf="setSummarryAt=='left' && heading.summary"
+              cdkDrag
+              style="padding: 10px 30px;cursor: move;">
+                <h2  
+                [ngStyle]="{
+                 'fontSize':(fontsize && wdth<992)?'small':'25px',
+                 'marginBottom':fontsize?'10px':'20px'
+                }"    
+                [style.color]="currentColor">
+                {{heading.summaryTitle}}</h2>
+                <p 
+                [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+                style="color: #9b9b9b !important;"
+                class="m-0">{{heading.summary}}</p>
+              </div>
+              <!-- end summary -->
+                <div
+                style="padding: 10px 30px;cursor: move;" 
+                cdkDrag
+                *ngIf="skills.length && setSkillsAt=='left'">
+                  <h2 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }"   
+                  [style.color]="currentColor">
+                   {{heading.skillsTitle}}
+                 </h2>
+            
+                  <table style="border:1px solid transparent">
+                    <tr   
+                    [style.marginBottom]="skillsIndex<skills?.length-1 ? '10px' : '0'"
+                    *ngFor="let item of skills;let skillsIndex=index">
+                     <td 
+                     class="pb-2"
+                     style="padding-right: 5px;vertical-align: top;">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                      style="color: #9b9b9b"
+                      width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                      </svg>
+                      
+                     </td>
+                      <td 
+                      style="vertical-align: top;"
+                      class="pb-2"> 
+                        <p   
+                        [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+                        style="color: #9b9b9b;margin: 0;">
+                        {{item}}
+                      </p></td>    
+                    </tr>
+                  </table>
+                </div>
+                <!-- end skills -->
+                <div 
+                cdkDrag
+                style="padding: 10px 30px;cursor: move;" 
+                 *ngIf="experience?.length && setExperienceAt=='left'">
+                  <h2 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }"   
+                  [style.color]="currentColor">{{heading?.experienceTitle}}</h2>
+                    <div 
+                    *ngFor="let item of experience;let experienceIndex=index"
+                    [style.marginBottom]="experienceIndex<experience?.length-1 ? '40px' : '0'"
+       
+                    >
+                    <table style="border: 1px solid transparent;">
+                      <td style="padding-right: 5px;vertical-align: top;">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                        style="color: #9b9b9b"
+                        width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                        </svg>
+                      </td>
+                      <td style="vertical-align: top;">
+                        <h5      
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'20px'
+                         }"  
+                        style="color: #9b9b9b !important;">
+                  
+                          {{item?.jopbTitle}} {{'At ' + item?.employer}}
+                      </h5>
+                     <p 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }"  
+                     style="color: #9b9b9b !important;"
+                     class="text-secondary" style="margin: 5px 0 10px 0;">{{item?.startDate}} - {{item?.current ? 'Current' : item?.endDate}}</p>
+                     <p 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }"  
+                     style="color: #9b9b9b !important;"
+                     class="m-0">{{item?.summary}}</p>
+                      </td>
+                    </table>
+                   
+                    </div>
+                </div>
+                <!-- end experience -->
+                <div 
+                cdkDrag
+                style="padding: 10px 30px;cursor: move;" 
+                 *ngIf="education?.length && setEducationAt=='left'">
+                 <h2    
+                 [ngStyle]="{
+                  'fontSize':(fontsize && wdth<992)?'small':'25px',
+                  'marginBottom':fontsize?'10px':'20px'
+                 }" 
+                 [style.color]="currentColor">{{heading?.educationTitle}}</h2>
+            
+                   <div 
+                   *ngFor="let item of education;let eduIndex=index"
+                   [style.marginBottom]="eduIndex<education?.length-1 ? '40px' : '0'"
+                   >
+                
+                  <table style="border: 1px solid transparent;">
+                      <tr>
+                        <td style="padding-right: 5px;vertical-align: top;">
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          style="color: #9b9b9b"
+                          width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                          </svg>
+                        </td>
+                        <td style="vertical-align: top;">
+                          <h5      
+                          [ngStyle]="{
+                            'fontSize':(fontsize && wdth<992)?'small':'20px'
+                           }"
+                          style="color: #9b9b9b !important;">
+                            {{item?.university}}</h5>
+                          <p 
+                          [ngStyle]="{
+                            'fontSize':(fontsize && wdth<992)?'small':'15px'
+                           }"
+                          style="color: #9b9b9b !important;"
+                          class="text-secondary m-0">{{item?.graduationDate}}</p>
+                        </td>
+                      </tr>
+                  </table>
+                   </div>
+               </div>
+               <!-- end education -->
+               <ng-container *ngIf="customSection?.length">
+                <div
+            
+                 *ngFor="let item of customSection">
+                 <div 
+                 cdkDrag
+                 style="padding: 10px 30px;cursor: move;"
+                 *ngIf="item.leftOrRight=='left'">
+                   <h2   
+                   [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                   *ngIf="item.sectionTitle" 
+                   [style.color]="currentColor">{{item?.sectionTitle}}</h2>
+                   <div 
+                   [style.marginBottom]="contentIndex<item.content?.length-1 ? '10px' : '0'"
+                   *ngFor="let content of item.content;let contentIndex=index">
+                     <h5 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'20px'
+                     }" 
+                     *ngIf="content?.bold"
+                     style="color: #9b9b9b !important;"
+                     class="mb-1">{{content?.bold}}</h5>
+                     <p 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }" 
+                     *ngIf="content?.normal"
+                     class="text-secondary mb-1">{{content?.normal}}</p>
+                
+                     <table 
+                     style="border:1px solid transparent">
+                     <ng-container 
+                     *ngFor="let itemList of content?.list;let cstommIndex=index"
+                     >
+                     <tr 
+                     *ngIf="itemList.listItem"  
+                     [style.marginBottom]="cstommIndex<content?.list?.length-1 ? '10px' : '0'"
+                    >
+                      <td 
+                      class="pb-2"
+                      style="padding-right: 5px;vertical-align: top;">
+                       <svg xmlns="http://www.w3.org/2000/svg"
+                       style="color: #9b9b9b"
+                       width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                       </svg>
+                       
+                      </td>
+                       <td 
+                       style="vertical-align: top;"
+                       class="pb-2"> <p   
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'15px'
+                         }" 
+                        style="color: #9b9b9b;margin: 0;">
+                         {{itemList.listItem}}
+                       </p></td>    
+                     </tr>
+                     </ng-container>
+                     
+                    
+                    </table>
+                      
+                   </div>
+                  </div>
+                 
+           
+                </div>
+              </ng-container>
+              <!-- end custom section -->
+              </div>
+              
+           </div>
+          
+         
+            </th>
+            <!-- end left side -->
+            <th style="width: 60%;vertical-align: top"
+          
+            >
+              <div    cdkDropListGroup>
+                <div 
+                cdkDropList
+             #sidebarList="cdkDropList"
+              [cdkDropListData]="sidebar"
+             (cdkDropListDropped)="drop($event)"
+                >
+                <div 
+                *ngIf="setSummarryAt=='right' && heading.summary"
+                cdkDrag
+                style="padding: 10px 30px;cursor: move">
+                  <h2      
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                  [style.color]="currentColor">{{heading.summaryTitle}}</h2>
+                  <p 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'15px'
+                   }" 
+                  style="color: #9b9b9b !important;"
+                  class="m-0">{{heading.summary}}</p>
+                </div>
+                <!-- end summary -->
+                <div
+                style="padding: 10px 30px;cursor: move;" 
+                cdkDrag
+                *ngIf="skills.length && setSkillsAt=='right'">
+                  <h2 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                  [style.color]="currentColor">
+                   {{heading.skillsTitle}}
+                 </h2>
+            
+                  <table style="border:1px solid transparent">
+                    <tr   
+                    [style.marginBottom]="skillsIndex<skills?.length-1 ? '10px' : '0'"
+                    *ngFor="let item of skills;let skillsIndex=index">
+                     <td 
+                     class="pb-2"
+                     style="padding-right: 5px;vertical-align: top;">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                      style="color: #9b9b9b"
+                      width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                      </svg>
+                     </td>
+                      <td 
+                      style="vertical-align: top;"
+                      class="pb-2"> <p   
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'15px'
+                         }" 
+                        style="color: #9b9b9b;margin: 0;">
+                        {{item}}
+                      </p></td>    
+                    </tr>
+                  </table>
+                </div>
+                <!-- end skills -->
+                  <div 
+                  cdkDrag
+                  style="padding: 10px 30px;cursor: move;" 
+                   *ngIf="experience?.length && setExperienceAt=='right'">
+                    <h2 
+                    [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'25px',
+                      'marginBottom':fontsize?'10px':'20px'
+                     }" 
+                    [style.color]="currentColor">{{heading?.experienceTitle}}</h2>
+                      <div 
+                      *ngFor="let item of experience;let experienceIndex=index"
+                      [style.marginBottom]="experienceIndex<experience?.length-1 ? '40px' : '0'"
+         
+                      >
+                      <table style="border: 1px solid transparent;">
+                        <td style="padding-right: 5px;vertical-align: top;">
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          style="color: #9b9b9b"
+                          width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                          </svg>
+                        </td>
+                        <td style="vertical-align: top;">
+                          <h5      
+                          [ngStyle]="{
+                            'fontSize':(fontsize && wdth<992)?'small':'20px'
+                           }" 
+                          style="color: #9b9b9b !important;">
+                    
+                            {{item?.jopbTitle}} {{'At ' + item?.employer}}
+                        </h5>
+                       <p 
+                       [ngStyle]="{
+                        'fontSize':(fontsize && wdth<992)?'small':'15px'
+                       }" 
+                       style="color: #9b9b9b !important;"
+                       class="text-secondary" style="margin: 5px 0 10px 0;">{{item?.startDate}} - {{item?.current ? 'Current' : item?.endDate}}</p>
+                       <p 
+                       [ngStyle]="{
+                        'fontSize':(fontsize && wdth<992)?'small':'15px'
+                       }" 
+                       style="color: #9b9b9b !important;"
+                       class="m-0">{{item?.summary}}</p>
+                        </td>
+                      </table>
+                     
+                      </div>
+                  </div>
+                  <!-- end experience -->
+                  <div 
+                  cdkDrag
+                  style="padding: 10px 30px;cursor: move;" 
+                   *ngIf="education?.length && setEducationAt=='right'">
+                   <h2    
+                   [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                   [style.color]="currentColor">{{heading?.educationTitle}}</h2>
+              
+                     <div 
+                     *ngFor="let item of education;let eduIndex=index"
+                     [style.marginBottom]="eduIndex<education?.length-1 ? '40px' : '0'"
+                     >
+                  
+                    <table style="border: 1px solid transparent;">
+                        <tr>
+                          <td style="padding-right: 5px;vertical-align: top;">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            style="color: #9b9b9b"
+                            width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                              <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                            </svg>
+                          </td>
+                          <td
+                          style="vertical-align: top;"
+                          >
+                            <h5     
+                            [ngStyle]="{
+                              'fontSize':(fontsize && wdth<992)?'small':'20px'
+                             }" 
+                            style="color: #9b9b9b !important;">
+                              {{item?.university}}</h5>
+                            <p 
+                            [ngStyle]="{
+                              'fontSize':(fontsize && wdth<992)?'small':'15px'
+                             }" 
+                            style="color: #9b9b9b !important;"
+                            class="text-secondary m-0">{{item?.graduationDate}}</p>
+                          </td>
+                        </tr>
+                    </table>
+                     </div>
+                 </div>
+                 <!-- end education -->
+                 <ng-container *ngIf="customSection?.length">
+                   <div
+                    *ngFor="let item of customSection">
+                    <div 
+                    cdkDrag
+                    style="padding: 10px 30px;cursor: move;" 
+                    *ngIf="item.leftOrRight=='right'">
+                      <h2  
+                      *ngIf="item?.sectionTitle"  
+                      [ngStyle]="{
+                        'fontSize':(fontsize && wdth<992)?'small':'25px',
+                        'marginBottom':fontsize?'10px':'20px'
+                       }" 
+                      [style.color]="currentColor">{{item?.sectionTitle}}</h2>
+                      <div 
+                      [style.marginBottom]="contentIndex<item.content?.length-1 ? '10px' : '0'"
+                      *ngFor="let content of item.content;let contentIndex=index">
+                        <h5 
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'20px'
+                         }" 
+                        *ngIf="content?.bold"
+                        style="color: #9b9b9b !important;"
+                        class="mb-1">{{content?.bold}}</h5>
+                        <p 
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'15px'
+                         }" 
+                        *ngIf="content?.normal"
+                        class="text-secondary mb-1">{{content?.normal}}</p>
+                   
+                        <table 
+                        style="border:1px solid transparent">
+                        <ng-container 
+                        *ngFor="let itemList of content?.list;let cstommIndex=index"
+                        >
+                          <tr  
+                          *ngIf="itemList.listItem" 
+                          [style.marginBottom]="cstommIndex<content?.list?.length-1 ? '10px' : '0'"
+                       >
+                           <td 
+                           class="pb-2"
+                           style="padding-right: 5px;vertical-align: top;">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            style="color: #9b9b9b"
+                            width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                              <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                            </svg>
+                            
+                           </td>
+                            <td 
+                            style="vertical-align: top;"
+                            class="pb-2"> <p   
+                              [ngStyle]="{
+                                'fontSize':(fontsize && wdth<992)?'small':'15px'
+                               }" 
+                              style="color: #9b9b9b;margin: 0;">
+                              {{itemList.listItem}}
+                            </p></td>    
+                          </tr>
+                        </ng-container>
+                        
+                       
+                       </table>
+                         
+                      </div>
+                    </div>
+                    
+              
+                   </div>
+                 </ng-container>
+                 <!-- end custom section -->
+                </div>
+                
+             </div>
+             
+            </th>
+            <!-- end right side -->
+          </tr>
+       </table>
+    
+  
+    </div>
+    <!-- end template one -->
+
+    <div
+      *ngIf="currentTemplate==3" 
+      [id]="currentTemplate == 3 ? 'content' : 'none'"
+      >
+  
+      <!-- start heading -->
+        <div 
+        [style.backgroundColor]="currentColor"
+        style="color: white;padding: 30px;margin-bottom: 10px;"
+        >
+          <h2   
+          [style.fontSize]="(fontsize && wdth<992)?'medium':'32px'"
+          class="mb-1 mainName">{{heading?.name}}</h2>
+          <h4 
+          [style.fontSize]="(fontsize && wdth<992)?'small':'24px'"
+          class="mb-1">{{heading?.position}}</h4>
+          <table  style="border: 1px solid transparent;">
+            <tr>
+             <td style="padding-right: 10px;vertical-align: text-top;">
+              <svg 
+              style="color:white"
+              xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+              </svg>
+             </td>
+              <td style="vertical-align: text-top;font-weight:normal;color:white"
+              [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+              >{{heading?.email}}</td>    
+            </tr>
+          </table>
+       </div>
+       <!-- end heading -->
+
+       <table style="width: 100%;border: 1px solid transparent">
+      
+          <tr>
+            <th 
+    
+            style="width: 40%;vertical-align: top">
+            <div style="padding: 10px 30px;">
+              <h2  
+              [ngStyle]="{
+               'fontSize':(fontsize && wdth<992)?'small':'25px',
+               'marginBottom':fontsize?'10px':'20px'
+              }"    
+              [style.color]="currentColor">Contact :</h2>
+              <table style="border: 1px solid transparent;"> 
+                <tr>
+                 <td style="padding-right: 10px;vertical-align: text-top;">
+                   <svg 
+                   style="color:rgb(155, 155, 155)"
+                   xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                     <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                   </svg>
+                 </td>
+                  <td 
+                  
+                  style="vertical-align: text-top;font-weight:normal;color:rgb(155, 155, 155)"
+                  [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+                  >{{heading?.address}}</td>    
+                </tr>
+              </table>
+              <table  style="border: 1px solid transparent;">
+               <tr>
+                <td style="padding-right: 10px;vertical-align: text-top;">
+                 <svg 
+                 style="color:rgb(155, 155, 155)"
+                 xmlns="http://www.w3.org/2000/svg"  width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+                   <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                 </svg>
+                </td>
+                 <td style="vertical-align: text-top;font-weight:normal;color:rgb(155, 155, 155)"
+                 [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+                 >{{heading?.phone}}</td>    
+               </tr>
+             </table>
+        
+            </div>
+            <!-- end contact -->
+            <div    cdkDropListGroup>
+              <div 
+              cdkDropList
+           #sidebarList="cdkDropList"
+            [cdkDropListData]="sidebar"
+           (cdkDropListDropped)="drop($event)"
+              >
+              <div 
+  
+              *ngIf="setSummarryAt=='left' && heading.summary"
+              cdkDrag
+              style="padding: 10px 30px;cursor: move">
+                <h2  
+                [ngStyle]="{
+                 'fontSize':(fontsize && wdth<992)?'small':'25px',
+                 'marginBottom':fontsize?'10px':'20px'
+                }"    
+                [style.color]="currentColor">{{heading.summaryTitle}}</h2>
+                <p 
+                [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+                style="color: #9b9b9b !important;"
+                class="m-0">{{heading.summary}}</p>
+              </div>
+              <!-- end summary -->
+                <div
+                style="padding: 10px 30px;cursor: move;" 
+                cdkDrag
+                *ngIf="skills.length && setSkillsAt=='left'">
+                  <h2 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }"   
+                  [style.color]="currentColor">
+                   {{heading.skillsTitle}}
+                 </h2>
+            
+                  <table style="border:1px solid transparent">
+                    <tr   
+                    [style.marginBottom]="skillsIndex<skills?.length-1 ? '10px' : '0'"
+                    *ngFor="let item of skills;let skillsIndex=index">
+                     <td 
+                     class="pb-2"
+                     style="padding-right: 5px;vertical-align: top;">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                      style="color: #9b9b9b"
+                      width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                      </svg>
+                      
+                     </td>
+                      <td 
+                      style="vertical-align: top;"
+                      class="pb-2"> 
+                        <p   
+                        [style.fontSize]="(fontsize && wdth<992)?'small':'15px'"
+                        style="color: #9b9b9b;margin: 0;">
+                        {{item}}
+                      </p></td>    
+                    </tr>
+                  </table>
+                </div>
+                <!-- end skills -->
+                <div 
+                cdkDrag
+                style="padding: 10px 30px;cursor: move;" 
+                 *ngIf="experience?.length && setExperienceAt=='left'">
+                  <h2 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }"   
+                  [style.color]="currentColor">{{heading?.experienceTitle}}</h2>
+                    <div 
+                    *ngFor="let item of experience;let experienceIndex=index"
+                    [style.marginBottom]="experienceIndex<experience?.length-1 ? '40px' : '0'"
+       
+                    >
+                    <table style="border: 1px solid transparent;">
+                      <td style="padding-right: 5px;vertical-align: top;">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                        style="color: #9b9b9b"
+                        width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                        </svg>
+                      </td>
+                      <td style="vertical-align: top;">
+                        <h5      
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'20px'
+                         }"  
+                        style="color: #9b9b9b !important;">
+                  
+                          {{item?.jopbTitle}} {{'At ' + item?.employer}}
+                      </h5>
+                     <p 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }"  
+                     style="color: #9b9b9b !important;"
+                     class="text-secondary" style="margin: 5px 0 10px 0;">{{item?.startDate}} - {{item?.current ? 'Current' : item?.endDate}}</p>
+                     <p 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }"  
+                     style="color: #9b9b9b !important;"
+                     class="m-0">{{item?.summary}}</p>
+                      </td>
+                    </table>
+                   
+                    </div>
+                </div>
+                <!-- end experience -->
+                <div 
+                cdkDrag
+                style="padding: 10px 30px;cursor: move;" 
+                 *ngIf="education?.length && setEducationAt=='left'">
+                 <h2    
+                 [ngStyle]="{
+                  'fontSize':(fontsize && wdth<992)?'small':'25px',
+                  'marginBottom':fontsize?'10px':'20px'
+                 }" 
+                 [style.color]="currentColor">{{heading?.educationTitle}}</h2>
+            
+                   <div 
+                   *ngFor="let item of education;let eduIndex=index"
+                   [style.marginBottom]="eduIndex<education?.length-1 ? '40px' : '0'"
+                   >
+                
+                  <table style="border: 1px solid transparent;">
+                      <tr>
+                        <td style="padding-right: 5px;vertical-align: top;">
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          style="color: #9b9b9b"
+                          width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                          </svg>
+                        </td>
+                        <td style="vertical-align: top;">
+                          <h5      
+                          [ngStyle]="{
+                            'fontSize':(fontsize && wdth<992)?'small':'20px'
+                           }"
+                          style="color: #9b9b9b !important;">
+                            {{item?.university}}</h5>
+                          <p 
+                          [ngStyle]="{
+                            'fontSize':(fontsize && wdth<992)?'small':'15px'
+                           }"
+                          style="color: #9b9b9b !important;"
+                          class="text-secondary m-0">{{item?.graduationDate}}</p>
+                        </td>
+                      </tr>
+                  </table>
+                   </div>
+               </div>
+               <!-- end education -->
+               <ng-container *ngIf="customSection?.length">
+                <div
+            
+                 *ngFor="let item of customSection">
+                 <div 
+                 cdkDrag
+                 style="padding: 10px 30px;cursor: move;"
+                 *ngIf="item.leftOrRight=='left'">
+                   <h2   
+                   [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                   *ngIf="item.sectionTitle" 
+                   [style.color]="currentColor">{{item?.sectionTitle}}</h2>
+                   <div 
+                   [style.marginBottom]="contentIndex<item.content?.length-1 ? '10px' : '0'"
+                   *ngFor="let content of item.content;let contentIndex=index">
+                     <h5 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'20px'
+                     }" 
+                     *ngIf="content?.bold"
+                     style="color: #9b9b9b !important;"
+                     class="mb-1">{{content?.bold}}</h5>
+                     <p 
+                     [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }" 
+                     *ngIf="content?.normal"
+                     class="text-secondary mb-1">{{content?.normal}}</p>
+                
+                     <table 
+                     style="border:1px solid transparent">
+                     <ng-container 
+                     *ngFor="let itemList of content?.list;let cstommIndex=index"
+                     >
+                     <tr 
+                     *ngIf="itemList.listItem"  
+                     [style.marginBottom]="cstommIndex<content?.list?.length-1 ? '10px' : '0'"
+                    >
+                      <td 
+                      class="pb-2"
+                      style="padding-right: 5px;vertical-align: top;">
+                       <svg xmlns="http://www.w3.org/2000/svg"
+                       style="color: #9b9b9b"
+                       width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                         <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                       </svg>
+                       
+                      </td>
+                       <td 
+                       style="vertical-align: top;"
+                       class="pb-2"> <p   
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'15px'
+                         }" 
+                        style="color: #9b9b9b;margin: 0;">
+                         {{itemList.listItem}}
+                       </p></td>    
+                     </tr>
+                     </ng-container>
+                     
+                    
+                    </table>
+                      
+                   </div>
+                  </div>
+                 
+           
+                </div>
+              </ng-container>
+              <!-- end custom section -->
+              </div>
+              
+           </div>
+          
+         
+            </th>
+            <!-- end left side -->
+            <th style="width: 60%;vertical-align: top"
+          
+            >
+              <div    cdkDropListGroup>
+                <div 
+                cdkDropList
+             #sidebarList="cdkDropList"
+              [cdkDropListData]="sidebar"
+             (cdkDropListDropped)="drop($event)"
+                >
+                <div 
+                *ngIf="setSummarryAt=='right' && heading.summary"
+                cdkDrag
+                style="padding: 10px 30px;cursor: move">
+                  <h2      
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                  [style.color]="currentColor">{{heading.summaryTitle}}</h2>
+                  <p 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'15px'
+                   }" 
+                  style="color: #9b9b9b !important;"
+                  class="m-0">{{heading.summary}}</p>
+                </div>
+                <!-- end summary -->
+                <div
+                style="padding: 10px 30px;cursor: move;" 
+                cdkDrag
+                *ngIf="skills.length && setSkillsAt=='right'">
+                  <h2 
+                  [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                  [style.color]="currentColor">
+                   {{heading.skillsTitle}}
+                 </h2>
+            
+                  <table style="border:1px solid transparent">
+                    <tr   
+                    [style.marginBottom]="skillsIndex<skills?.length-1 ? '10px' : '0'"
+                    *ngFor="let item of skills;let skillsIndex=index">
+                     <td 
+                     class="pb-2"
+                     style="padding-right: 5px;vertical-align: top;">
+                      <svg xmlns="http://www.w3.org/2000/svg"
+                      style="color: #9b9b9b"
+                      width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                      </svg>
+                     </td>
+                      <td 
+                      style="vertical-align: top;"
+                      class="pb-2"> <p   
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'15px'
+                         }" 
+                        style="color: #9b9b9b;margin: 0;">
+                        {{item}}
+                      </p></td>    
+                    </tr>
+                  </table>
+                </div>
+                <!-- end skills -->
+                  <div 
+                  cdkDrag
+                  style="padding: 10px 30px;cursor: move;" 
+                   *ngIf="experience?.length && setExperienceAt=='right'">
+                    <h2 
+                    [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'25px',
+                      'marginBottom':fontsize?'10px':'20px'
+                     }" 
+                    [style.color]="currentColor">{{heading?.experienceTitle}}</h2>
+                      <div 
+                      *ngFor="let item of experience;let experienceIndex=index"
+                      [style.marginBottom]="experienceIndex<experience?.length-1 ? '40px' : '0'"
+         
+                      >
+                      <table style="border: 1px solid transparent;">
+                        <td style="padding-right: 5px;vertical-align: top;">
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          style="color: #9b9b9b"
+                          width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                            <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                          </svg>
+                        </td>
+                        <td style="vertical-align: top;">
+                          <h5      
+                          [ngStyle]="{
+                            'fontSize':(fontsize && wdth<992)?'small':'20px'
+                           }" 
+                          style="color: #9b9b9b !important;">
+                    
+                            {{item?.jopbTitle}} {{'At ' + item?.employer}}
+                        </h5>
+                       <p 
+                       [ngStyle]="{
+                        'fontSize':(fontsize && wdth<992)?'small':'15px'
+                       }" 
+                       style="color: #9b9b9b !important;"
+                       class="text-secondary" style="margin: 5px 0 10px 0;">{{item?.startDate}} - {{item?.current ? 'Current' : item?.endDate}}</p>
+                       <p 
+                       [ngStyle]="{
+                        'fontSize':(fontsize && wdth<992)?'small':'15px'
+                       }" 
+                       style="color: #9b9b9b !important;"
+                       class="m-0">{{item?.summary}}</p>
+                        </td>
+                      </table>
+                     
+                      </div>
+                  </div>
+                  <!-- end experience -->
+                  <div 
+                  cdkDrag
+                  style="padding: 10px 30px;cursor: move;" 
+                   *ngIf="education?.length && setEducationAt=='right'">
+                   <h2    
+                   [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'25px',
+                    'marginBottom':fontsize?'10px':'20px'
+                   }" 
+                   [style.color]="currentColor">{{heading?.educationTitle}}</h2>
+              
+                     <div 
+                     *ngFor="let item of education;let eduIndex=index"
+                     [style.marginBottom]="eduIndex<education?.length-1 ? '40px' : '0'"
+                     >
+                  
+                    <table style="border: 1px solid transparent;">
+                        <tr>
+                          <td style="padding-right: 5px;vertical-align: top;">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            style="color: #9b9b9b"
+                            width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                              <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                            </svg>
+                          </td>
+                          <td 
+                          style="vertical-align: top;"
+                          >
+                            <h5     
+                            [ngStyle]="{
+                              'fontSize':(fontsize && wdth<992)?'small':'20px'
+                             }" 
+                            style="color: #9b9b9b !important;">
+                              {{item?.university}}</h5>
+                            <p 
+                            [ngStyle]="{
+                              'fontSize':(fontsize && wdth<992)?'small':'15px'
+                             }" 
+                            style="color: #9b9b9b !important;"
+                            class="text-secondary m-0">{{item?.graduationDate}}</p>
+                          </td>
+                        </tr>
+                    </table>
+                     </div>
+                 </div>
+                 <!-- end education -->
+                 <ng-container *ngIf="customSection?.length">
+                   <div
+                    *ngFor="let item of customSection">
+                    <div 
+                    cdkDrag
+                    style="padding: 10px 30px;cursor: move;" 
+                    *ngIf="item.leftOrRight=='right'">
+                      <h2  
+                      *ngIf="item?.sectionTitle"  
+                      [ngStyle]="{
+                        'fontSize':(fontsize && wdth<992)?'small':'25px',
+                        'marginBottom':fontsize?'10px':'20px'
+                       }" 
+                      [style.color]="currentColor">{{item?.sectionTitle}}</h2>
+                      <div 
+                      [style.marginBottom]="contentIndex<item.content?.length-1 ? '10px' : '0'"
+                      *ngFor="let content of item.content;let contentIndex=index">
+                        <h5 
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'20px'
+                         }" 
+                        *ngIf="content?.bold"
+                        style="color: #9b9b9b !important;"
+                        class="mb-1">{{content?.bold}}</h5>
+                        <p 
+                        [ngStyle]="{
+                          'fontSize':(fontsize && wdth<992)?'small':'15px'
+                         }" 
+                        *ngIf="content?.normal"
+                        class="text-secondary mb-1">{{content?.normal}}</p>
+                   
+                        <table 
+                        style="border:1px solid transparent">
+                        <ng-container 
+                        *ngFor="let itemList of content?.list;let cstommIndex=index"
+                        >
+                          <tr  
+                          *ngIf="itemList.listItem" 
+                          [style.marginBottom]="cstommIndex<content?.list?.length-1 ? '10px' : '0'"
+                       >
+                           <td 
+                           class="pb-2"
+                           style="padding-right: 5px;vertical-align: top;">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            style="color: #9b9b9b"
+                            width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                              <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                            </svg>
+                            
+                           </td>
+                            <td 
+                            style="vertical-align: top;"
+                            class="pb-2"> <p   
+                              [ngStyle]="{
+                                'fontSize':(fontsize && wdth<992)?'small':'15px'
+                               }" 
+                              style="color: #9b9b9b;margin: 0;">
+                              {{itemList.listItem}}
+                            </p></td>    
+                          </tr>
+                        </ng-container>
+                        
+                       
+                       </table>
+                         
+                      </div>
+                    </div>
+                    
+              
+                   </div>
+                 </ng-container>
+                 <!-- end custom section -->
+                </div>
+                
+             </div>
+             
+            </th>
+            <!-- end right side -->
+          </tr>
+       </table>
+    
+  
+    </div>
+    <!-- end template three -->
+    <div 
+    *ngIf="currentTemplate==2"  
+      cdkDropListGroup
+      class=" cvSection">
+        <div  
+         [id]="currentTemplate == 2 ? 'content' : 'none'"
+        style="padding: 70px;"
+        >
+          <div 
+        style="margin-bottom: 30px;">
+            <h2 
+            [ngStyle]="{
+              'fontSize':(fontsize && wdth<992)?'small':'32px'
+             }" 
+            [style.color]="currentColor"
+            class="m-0 mainName">{{heading?.name}}</h2>
+            <h4
+            [ngStyle]="{
+              'fontSize':(fontsize && wdth<992)?'small':'25px'
+             }" 
+            style="margin-bottom: 20px;"
+            >{{heading?.position}}</h4>
+            <p 
+            [ngStyle]="{
+              'fontSize':(fontsize && wdth<992)?'small':'15px'
+             }" 
+            class="m-0">{{heading?.address}}</p>
+            <p
+            [ngStyle]="{
+              'fontSize':(fontsize && wdth<992)?'small':'15px'
+             }" 
+            class="m-0">{{heading?.phone}}</p>
+            <p 
+            [ngStyle]="{
+              'fontSize':(fontsize && wdth<992)?'small':'15px'
+             }" 
+            class="m-0 text-primary">{{heading?.email}}</p>
+         </div>
+         <!-- end heading -->
+         <div
+         cdkDropList
+         #sidebarList="cdkDropList"
+          [cdkDropListData]="sidebar"
+               (cdkDropListDropped)="drop($event)"
+         > 
+         <div
+         style="cursor: move;"
+         cdkDrag
+         class="mb-4">
+           <h2   
+           [ngStyle]="{
+            'fontSize':(fontsize && wdth<992)?'small':'25px'
+           }" 
+           style="
+           font-weight: bold;margin-bottom: 10px;"
+           [style.color]="currentColor">{{heading.summaryTitle}}</h2>
+           <p
+           [ngStyle]="{
+            'fontSize':(fontsize && wdth<992)?'small':'15px'
+           }" 
+           >{{heading.summary}}</p>
+         </div>
+         <!-- end summary -->
+         <div
+       class="mb-4"
+       style="cursor: move;"
+         cdkDrag
+         *ngIf="skills.length">
+           <h2 
+           [ngStyle]="{
+            'fontSize':(fontsize && wdth<992)?'small':'25px'
+           }" 
+           style="
+           font-weight: bold;margin-bottom: 10px;"
+           [style.color]="currentColor">
+            {{heading.skillsTitle}}
+          </h2>
+     
+           <table style="border:1px solid transparent">
+             <tr   
+             [style.marginBottom]="skillsIndex<skills?.length-1 ? '10px' : '0'"
+             *ngFor="let item of skills;let skillsIndex=index">
+              <td 
+              class="pb-2"
+              style="padding-right: 5px;vertical-align: top;">
+               <svg xmlns="http://www.w3.org/2000/svg"
+               [style.color]="currentColor"
+               width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                 <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+               </svg>
+              </td>
+               <td 
+               style="vertical-align: top;"
+               class="pb-2"> <p   
+                [ngStyle]="{
+                  'fontSize':(fontsize && wdth<992)?'small':'15px'
+                 }" 
+                style="margin: 0;">
+                 {{item}}
+               </p></td>    
+             </tr>
+           </table>
+         </div>
+         <!-- end skills -->
+         <div 
+         style="cursor: move;"
+         cdkDrag
+        class="mb-4"
+          *ngIf="experience?.length">
+           <h2 
+           [ngStyle]="{
+            'fontSize':(fontsize && wdth<992)?'small':'25px'
+           }" 
+           style="margin-bottom: 10px;font-weight: bold;"
+           [style.color]="currentColor">{{heading?.experienceTitle}}</h2>
+             <div 
+             *ngFor="let item of experience;let experienceIndex=index"
+             [style.marginBottom]="experienceIndex<experience?.length-1 ? '40px' : '0'"
+  
+             >
+             <table style="border: 1px solid transparent;">
+               <td style="padding-right: 5px;vertical-align: top;">
+                 <svg xmlns="http://www.w3.org/2000/svg"
+                 [style.color]="currentColor"
+                 width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                   <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                 </svg>
+               </td>
+               <td style="vertical-align: top;">
+                 <h5 
+                 [ngStyle]="{
+                  'fontSize':(fontsize && wdth<992)?'small':'20px'
+                 }" 
+                 >
+           
+                   {{item?.jopbTitle}} {{'At ' + item?.employer}}
+               </h5>
+              <p 
+              [ngStyle]="{
+                'fontSize':(fontsize && wdth<992)?'small':'15px'
+               }" 
+          style="margin: 5px 0 10px 0;">{{item?.startDate}} - {{item?.current ? 'Current' : item?.endDate}}</p>
+              <p 
+              [ngStyle]="{
+                'fontSize':(fontsize && wdth<992)?'small':'15px'
+               }" 
+              class="m-0">{{item?.summary}}</p>
+               </td>
+             </table>
+            
+             </div>
+         </div>
+         <!-- end experience -->
+         <div 
+         style="cursor: move;"
+         cdkDrag
+         class="mb-4"
+          *ngIf="education?.length">
+          <h2    
+          [ngStyle]="{
+            'fontSize':(fontsize && wdth<992)?'small':'25px'
+           }" 
+          style="
+          font-weight: bold;margin-bottom: 10px;"
+          [style.color]="currentColor">{{heading?.educationTitle}}</h2>
+     
+            <div 
+            *ngFor="let item of education;let eduIndex=index"
+            [style.marginBottom]="eduIndex<education?.length-1 ? '40px' : '0'"
+            >
+         
+           <table style="border: 1px solid transparent;">
+               <tr>
+                 <td style="padding-right: 5px;vertical-align: top;">
+                   <svg xmlns="http://www.w3.org/2000/svg"
+                   [style.color]="currentColor"
+                   width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                   </svg>
+                 </td>
+                 <td style="vertical-align: top;"> 
+                   <h5
+                   [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'20px'
+                   }" 
+                   >
+                     {{item?.university}}</h5>
+                   <p 
+                   [ngStyle]="{
+                    'fontSize':(fontsize && wdth<992)?'small':'15px'
+                   }" 
+                   class="text-secondary m-0">{{item?.graduationDate}}</p>
+                 </td>
+               </tr>
+           </table>
+            </div>
+        </div>
+        <!-- end education -->
+        <ng-container *ngIf="customSection?.length">
+          <div
+           *ngFor="let item of customSection">
+           <div 
+           cdkDrag
+           style="cursor: move;"
+          class="mb-4" >
+             <h2  
+             [ngStyle]="{
+              'fontSize':(fontsize && wdth<992)?'small':'25px'
+             }" 
+             *ngIf="item?.sectionTitle"  
+             style="margin-bottom: 20px;font-weight: bold;"
+             [style.color]="currentColor">{{item?.sectionTitle}}</h2>
+             <div 
+             [style.marginBottom]="contentIndex<item.content?.length-1 ? '10px' : '0'"
+             *ngFor="let content of item.content;let contentIndex=index">
+               <h5 
+               [ngStyle]="{
+                'fontSize':(fontsize && wdth<992)?'small':'20px'
+               }" 
+               *ngIf="content?.bold"
+             
+               class="mb-1">{{content?.bold}}</h5>
+               <p 
+               [ngStyle]="{
+                'fontSize':(fontsize && wdth<992)?'small':'15px'
+               }" 
+               *ngIf="content?.normal"
+               class=" mb-1">{{content?.normal}}</p>
+          
+               <table 
+               style="border:1px solid transparent">
+               <ng-container 
+               *ngFor="let itemList of content?.list;let cstommIndex=index"
+               >
+                 <tr  
+                 *ngIf="itemList.listItem" 
+                 [style.marginBottom]="cstommIndex<content?.list?.length-1 ? '10px' : '0'"
+              >
+                  <td 
+                  class="pb-2"
+                  style="padding-right: 5px;vertical-align: top;">
+                   <svg xmlns="http://www.w3.org/2000/svg"
+                   [style.color]="currentColor"
+                   width="10" height="10" fill="currentColor" class="bi bi-square-fill" viewBox="0 0 16 16">
+                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+                   </svg>
+                   
+                  </td>
+                   <td class="pb-2" style="vertical-align: top;"> <p 
+                    [ngStyle]="{
+                      'fontSize':(fontsize && wdth<992)?'small':'15px'
+                     }" 
+                    class="m-0">
+                     {{itemList.listItem}}
+                   </p></td>    
+                 </tr>
+               </ng-container>
+               
+              
+              </table>
+                
+             </div>
+           </div>
+           
+     
+          </div>
+        </ng-container>
+        <!-- end custom section -->
+         </div>
+        </div>
+      </div>
+    <!-- end template two -->
+  </div>
+</ng-template>
+  </div>
+
+
+  
+     
+    </div>
+  </div>
+  <style>
+    footer a {
+      font-size: small;
+    }
+    .mainName {
+      /* font-weight: bold; */
+      font-family: 'Oxygen', sans-serif;
+      font-weight: 700;
+    }
+  
+  
+  
+    * {
+      word-break: break-word;
+    }
+
+  p{font-weight:  normal !important;}
+  </style>
