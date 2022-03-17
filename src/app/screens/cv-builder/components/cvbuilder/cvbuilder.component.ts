@@ -309,18 +309,18 @@ addCustomeSection(value) {
   if(this.updateCustomeIndex!=-1) this.customSection[this.updateCustomeIndex]=value 
   else   this.customSection.push(value)
   this.customSectionForm.reset()
-  for(let i = 0 ; i < value.content.length;i++) {
-    this.deleteContent(i)
-  }
   console.log(value)
-  if(this.getContent().length) this.deleteContent(0)
+  this.getContent().clear()
   this.updateCustomeIndex=-1
 }
 removeCustomeSection(index) {
   this.customSection.splice(index,1)
 }
+
 editCustomeSection(index,item) {
+ this.getContent().clear()
   this.updateCustomeIndex=index
+  console.log(this.getContent().length)
   for (let i = 0; i < item.content.length;i++) {
     this.addContent()
     for(let j = 0; j < item.content[i].list?.length;j++) {
@@ -328,7 +328,6 @@ editCustomeSection(index,item) {
     }
   }
   this.customSectionForm.patchValue(item)
-
 }
 removeValidatorr() {
  
