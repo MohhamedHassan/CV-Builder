@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl:'https://simple-api11.herokuapp.com/'
+  apiUrl: 'https://cv-builder-api.onrender.com/'
 };
-
+ // old api url /// apiUrl:'https://simple-api11.herokuapp.com/'
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
