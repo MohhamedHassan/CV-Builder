@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\moHassan\cv-creator\src\polyfills.ts */"hN/g");
+module.exports = __webpack_require__(/*! C:\Users\430 G3\Desktop\cv-builder\src\polyfills.ts */"hN/g");
 
 
 /***/ }),

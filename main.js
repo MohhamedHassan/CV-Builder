@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\moHassan\cv-creator\src\main.ts */"zUnb");
+module.exports = __webpack_require__(/*! C:\Users\430 G3\Desktop\cv-builder\src\main.ts */"zUnb");
 
 
 /***/ }),
@@ -27,8 +27,9 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 const environment = {
     production: false,
-    apiUrl: 'https://simple-api11.herokuapp.com/'
+    apiUrl: 'https://cv-builder-api.onrender.com/'
 };
+// old api url /// apiUrl:'https://simple-api11.herokuapp.com/'
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
